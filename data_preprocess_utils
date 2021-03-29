@@ -46,7 +46,7 @@ def load_user_graph(user_graph_file,limit):
         user_graph[user] = list(friends)
     return user_graph,user_review_count
 	
-def filter_user_graph(user_graph,min_friends,max_friends,user_review_count,min_reviews,max_reviews):
+#def filter_user_graph(user_graph,min_friends,max_friends,user_review_count,min_reviews,max_reviews):
     """
     Filtering a user graph to include only users with a required amount of friends and reviews
     Connections are removed until only users who fulfills the given requirements are reamined
