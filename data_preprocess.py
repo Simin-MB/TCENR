@@ -66,9 +66,9 @@ print(len(user_review_count))
 len(user_graph)
 
 # Filter out users with friends not in given range
-filtered_graph = filter_user_graph(user_graph,MIN_FRIENDS,MAX_FRIENDS,user_review_count,1,MAX_USER_REVIEWS)
+#filtered_graph = filter_user_graph(user_graph,MIN_FRIENDS,MAX_FRIENDS,user_review_count,1,MAX_USER_REVIEWS)
 
-user_graph = filtered_graph
+#user_graph = filtered_graph
 
 # Load business locations data
 locations,categories,address = load_poi_file(POI_FILE,POIS_LIMIT)
@@ -79,7 +79,7 @@ data,poi_reviews_count,user_review_count = load_data(FILE_NAME,FILTERED_CHARS,N,
 print("Loaded ",len(data)," reviews")
 
 # Filter the user graph to include required at least 5 friends and number of reviews in given range
-filtered_graph = filter_user_graph(user_graph,MIN_FRIENDS,MAX_FRIENDS,user_review_count,MIN_USER_REVIEWS,MAX_USER_REVIEWS)
+#filtered_graph = filter_user_graph(user_graph,MIN_FRIENDS,MAX_FRIENDS,user_review_count,MIN_USER_REVIEWS,MAX_USER_REVIEWS)
 
 len(data)
 
@@ -97,7 +97,7 @@ for record in new_data:
 	reviewed_users[uid] += 1
 
 # Filter the graph once more using the latest number of reviews to retrieve latest list of users
-filtered_graph2 = filter_user_graph(filtered_graph,1,MAX_FRIENDS,reviewed_users,1,MAX_USER_REVIEWS)
+#filtered_graph2 = filter_user_graph(filtered_graph,1,MAX_FRIENDS,reviewed_users,1,MAX_USER_REVIEWS)
 
 # Transform the users' data to internal ids
 filtered_graph2,dictionary['user_to_uid'],dictionary['uid_to_user'] = user_to_uid(filtered_graph)
