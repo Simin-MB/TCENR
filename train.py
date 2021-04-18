@@ -76,7 +76,7 @@ def get_reviews(data,reviews):
         review_list.append(reviews[key])
     return review_list
   
-  # Transform textual reviews from dictionary of train and validation data to match the user-location entries sequence
+# Transform textual reviews from dictionary of train and validation data to match the user-location entries sequence
 embedded_user_reviews = get_reviews(train['user'],reviews['user_reviews'])
 embedded_poi_reviews = get_reviews(train['poi'],reviews['poi_reviews'])
 embedded_user_reviews_val = get_reviews(validation['user'],reviews['user_reviews'])
@@ -169,7 +169,7 @@ def generate_instances(batch_size,u_input,p_input,r_input,u_reviews,p_reviews,u_
         else:
             yield x
             
-            # Setting model layer structure
+# Setting model layer structure
 WORD_EMBEDDING = 50
 REVIEWS_HIDDEN_LAYER_SIZE = 32
 CONTEXT_LAYERS = [32,16]
@@ -188,7 +188,7 @@ EPOCHS = 50
 L_RATE = 0.005
 # Verbose variable controls the level of output printing
 VERBOSE = 1
-#GRU_UNITS = list(map(int, sys.argv[2:].strip('[]').split(',')))
+GRU_UNITS = list(sys.argv[2].strip('[]').split(','))
 
 # Setting the size for the user and poi reviews embedding layer
 user_embedded_size = len(embedded_user_reviews[0])
@@ -204,10 +204,10 @@ val_epoch_steps = (len(validation['user'])//BATCH_SIZE)
 contextual = 2
 textualmodel = True
 mf = 0
-RNN = list(sys.argv[3:])
+RNN = sys.argv[2]
 #ch_my = 
 #print("RNN type {}, layers {}".format(RNN,GRU_UNITS))
-POOLING_SIZE = list(sys.argv[4:])
+POOLING_SIZE = sys.argv[2]
 print("pooling: {}".format(POOLING_SIZE))
 if (RNN==0):
     CONTEXT_LAYERS = GRU_UNITS
@@ -215,9 +215,8 @@ if (RNN==0):
 print("MLP layers:{}".format(CONTEXT_LAYERS))
 
 # Define the model name used in saving it to disk 
-RUN_NUM = sys.argv[5:]
-    
-model_str = str(WORDS) + "_" + str(RNN) + "_" + str(POOLING_SIZE) + "_" + str(RUN_NUM) 
+RUN_NUM = sys.argv[1]
+model_str = str(WORDS) + "_" + str(RNN) + "_" + str(GRU_UNITS) + "_" + str(POOLING_SIZE) + "_" + RUN_NUM
 print(model_str)
 
 # Model path is the output directory of the model and checkpoint path is the directory for checkpoints during training
@@ -240,7 +239,7 @@ if contextual>=1:
     inputs = inputs + [user_input_layer,poi_input_layer]
 
 
-        # Embedding layers for the user and poi input data. Results in the latent factors for each user/poi
+    # Embedding layers for the user and poi input data. Results in the latent factors for each user/poi
     user_embedding = Embedding(input_dim = total_users
                                , output_dim = CONTEXT_LATENT_DIMS 
                                ,embeddings_initializer='normal', embeddings_regularizer = l2(CONTEXT_REG_LAYERS[0]), 
@@ -260,7 +259,7 @@ if contextual>=1:
         poi_context_output = Dense(total_pois,name='poi_context_output', activation='sigmoid',
                                     kernel_initializer='lecun_uniform')(poi_latent_flattened)
         
-        # Add the output, corresponding loss functions and weights for the two in training
+# Add the output, corresponding loss functions and weights for the two in training
 contextual_outputs = contextual_outputs + [user_context_output,poi_context_output]
 losses = losses + ['categorical_crossentropy','categorical_crossentropy']
 
@@ -286,14 +285,14 @@ else:
         hidden_layer = Dense(CONTEXT_LAYERS[i],name='hidden_' + str(i), activation='relu', 
                             kernel_regularizer= l2(CONTEXT_REG_LAYERS[i]))(hidden_layer)
         
-        # Setting parameters if textual modeling is used
+# Setting parameters if textual modeling is used
 if textualmodel:
     # The input vectors are the words used in users' and POIs' reviews
     user_reviews_input = Input(shape=(user_embedded_size, ), name = 'user_reviews_input')
     poi_reviews_input = Input(shape=(poi_embedded_size,), name = 'poi_reviews_input')
     inputs = inputs + [user_reviews_input,poi_reviews_input]
     
-    # Setting the pretrained embedding layer developed by GloVE
+# Setting the pretrained embedding layer developed by GloVE
 user_reviews_embedding = Embedding(len(dictionary),WORD_EMBEDDING, weights=[np.array(dictionary)],input_length=user_embedded_size,
                                        trainable=False) (user_reviews_input)
 poi_reviews_embedding = Embedding(len(dictionary),WORD_EMBEDDING,weights=[np.array(dictionary)],input_length=poi_embedded_size,
