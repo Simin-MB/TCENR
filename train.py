@@ -204,9 +204,8 @@ val_epoch_steps = (len(validation['user'])//BATCH_SIZE)
 contextual = 2
 textualmodel = True
 mf = 0
-RNN = sys.argv[2]
-#ch_my = 
-#print("RNN type {}, layers {}".format(RNN,GRU_UNITS))
+RNN = sys.argv[2] 
+print("RNN type {}, layers {}".format(RNN,GRU_UNITS))
 POOLING_SIZE = sys.argv[2]
 print("pooling: {}".format(POOLING_SIZE))
 if (RNN==0):
